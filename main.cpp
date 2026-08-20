@@ -6,10 +6,14 @@
 #include <unistd.h>
 #include <cstdio>
 #include "Agent.hpp"
+#include "DataEngine.hpp"
 
 int main() {
     // 6.7 Million Agents (1:10 Scale of the UK Population)
     const int TOTAL_CITIZENS = 6700000;
+
+    DataEngine dataEngine;
+    dataEngine.loadSchema("data/uk_agent_schema.csv");
 
     std::cout << "Allocating memory for " << TOTAL_CITIZENS << " UK citizens...\n";
     auto start_time = std::chrono::high_resolution_clock::now();

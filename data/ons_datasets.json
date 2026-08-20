@@ -1,5 +1,25 @@
 [
   {
+    "title": "Sexual orientation by occupancy rating (bedrooms):                     2021",
+    "url": "https://www.ons.gov.uk/datasets/RM186/editions/2021/versions/4"
+  },
+  {
+    "title": "Sexual orientation by type of central heating in household:                     2021",
+    "url": "https://www.ons.gov.uk/datasets/RM179/editions/2021/versions/4"
+  },
+  {
+    "title": "Gender identity by hours worked:                     2021",
+    "url": "https://www.ons.gov.uk/datasets/RM168/editions/2021/versions/5"
+  },
+  {
+    "title": "Highest level of qualification by household composition:                     2021",
+    "url": "https://www.ons.gov.uk/datasets/RM051/editions/2021/versions/3"
+  },
+  {
+    "title": "Household Reference Person indicator of previous service in UK armed forces:                     2021",
+    "url": "https://www.ons.gov.uk/datasets/TS074/editions/2021/versions/5"
+  },
+  {
     "title": "Gender identity by sexual orientation:                     2021",
     "url": "https://www.ons.gov.uk/datasets/RM175/editions/2021/versions/5"
   },
@@ -18,25 +38,5 @@
   {
     "title": "Household composition by ethnic group of Household Reference Person:                     2021",
     "url": "https://www.ons.gov.uk/datasets/RM058/editions/2021/versions/3"
-  },
-  {
-    "title": "Gender identity by economic activity status:                     2021",
-    "url": "https://www.ons.gov.uk/datasets/RM037/editions/2021/versions/5"
-  },
-  {
-    "title": "Households by deprivation dimensions:                     2021",
-    "url": "https://www.ons.gov.uk/datasets/TS011/editions/2021/versions/6"
-  },
-  {
-    "title": "Provision of unpaid care by households with people with a disability by economic activity status:                     2021",
-    "url": "https://www.ons.gov.uk/datasets/RM116/editions/2021/versions/3"
-  },
-  {
-    "title": "Ability to speak Welsh by employment history:                     2021",
-    "url": "https://www.ons.gov.uk/datasets/RM154/editions/2021/versions/3"
-  },
-  {
-    "title": "Veterans by occupation:                     2021",
-    "url": "https://www.ons.gov.uk/datasets/RM146/editions/2021/versions/4"
   }
 ]

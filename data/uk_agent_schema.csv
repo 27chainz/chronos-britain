@@ -1,0 +1,14 @@
+metric,category,weight,modifier
+ethnicity,White,0.817,32000
+ethnicity,Asian,0.093,34000
+ethnicity,Black,0.040,25000
+ethnicity,MixedOther,0.050,28000
+region,London,0.13,1.30
+region,South,0.23,1.10
+region,Midlands,0.16,1.00
+region,North,0.24,0.90
+region,Scotland,0.08,0.95
+region,Wales,0.05,0.90
+region,NI,0.03,0.90
+homeownership,under_40,0.35,0.0
+homeownership,over_40,0.70,0.0
