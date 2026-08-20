@@ -97,78 +97,83 @@ int main() {
         population.emplace_back(i, age, income, is_rural, eth, region, is_homeowner);
     }
 
-    // 2. Interactive Policy Input Shell
-    double tax_rate = 0.05;
-    double inflation_rate = 0.08;
-
+    // 2. Interactive Policy Input Shell (REPL)
     std::cout << "\n============================================\n";
     std::cout << "  UK SOCIOECONOMIC SIMULATION - POLICY ENGINE\n";
     std::cout << "============================================\n";
-    std::cout << "Loaded " << TOTAL_CITIZENS << " agents with ONS demographic models.\n\n";
+    std::cout << "Loaded " << TOTAL_CITIZENS << " agents with ONS demographic models.\n";
+    std::cout << "Enter policy parameters to observe population reactions.\n";
 
-    if (isatty(fileno(stdin))) {
-        std::cout << "Enter proposed Income Tax Rate % (e.g. 5 for 5%): ";
-        if (!(std::cin >> tax_rate)) tax_rate = 5.0;
-        tax_rate /= 100.0;
+    while (true) {
+        double tax_input = 0.0;
+        double inflation_input = 0.0;
 
-        std::cout << "Enter proposed Inflation Rate % (e.g. 8 for 8%): ";
-        if (!(std::cin >> inflation_rate)) inflation_rate = 8.0;
-        inflation_rate /= 100.0;
-    } else {
-        std::cout << "Non-interactive mode detected. Using default Tax: 5%, Inflation: 8%\n";
-    }
+        std::cout << "\n--------------------------------------------\n";
+        if (isatty(fileno(stdin))) {
+            std::cout << "Enter Income Tax Rate % (e.g., 5 for 5%, -1 to exit): ";
+            if (!(std::cin >> tax_input) || tax_input < 0) {
+                std::cout << "Exiting simulation shell.\n";
+                break;
+            }
 
-    std::cout << "\nRunning policy simulation with Tax Rate = " << (tax_rate * 100.0) 
-              << "% and Inflation = " << (inflation_rate * 100.0) << "%...\n";
-    
-    // Apply economic shock to all citizens
-    for (Agent& citizen : population) {
-        citizen.applyEconomicShock(inflation_rate, tax_rate);
-    }
+            std::cout << "Enter Inflation Rate % (e.g., 8 for 8%): ";
+            if (!(std::cin >> inflation_input)) break;
+        } else {
+            std::cout << "Non-interactive mode detected. Running test shock (Tax: 5%, Inflation: 8%)\n";
+            tax_input = 5.0;
+            inflation_input = 8.0;
+        }
 
-    // 3. Apply Peer Pressure (Ring Lattice Network)
-    int protesting_count = 0;
-    int rural_protest_count = 0;
-    int london_protest_count = 0;
+        double tax_rate = tax_input / 100.0;
+        double inflation_rate = inflation_input / 100.0;
 
-    for (int i = 0; i < TOTAL_CITIZENS; ++i) {
-        int peers_protesting = 0;
-        
-        // Check nearest neighbors (i-2, i-1, i+1, i+2) with wrap-around
-        for (int offset : {-2, -1, 1, 2}) {
-            int peer_idx = (i + offset + TOTAL_CITIZENS) % TOTAL_CITIZENS;
-            if (population[peer_idx].is_protesting) {
-                peers_protesting++;
+        auto step_start = std::chrono::high_resolution_clock::now();
+
+        // Reset agent state & apply new economic shock
+        for (Agent& citizen : population) {
+            citizen.resetState();
+            citizen.applyEconomicShock(inflation_rate, tax_rate);
+        }
+
+        // Apply Peer Pressure (Ring Lattice Network)
+        int protesting_count = 0;
+        int rural_protest_count = 0;
+        int london_protest_count = 0;
+
+        for (int i = 0; i < TOTAL_CITIZENS; ++i) {
+            int peers_protesting = 0;
+            
+            for (int offset : {-2, -1, 1, 2}) {
+                int peer_idx = (i + offset + TOTAL_CITIZENS) % TOTAL_CITIZENS;
+                if (population[peer_idx].is_protesting) {
+                    peers_protesting++;
+                }
+            }
+
+            if (peers_protesting >= 2) {
+                population[i].applyPeerPressure();
+            }
+
+            if (population[i].is_protesting) {
+                protesting_count++;
+                if (population[i].is_rural) rural_protest_count++;
+                if (population[i].region == Region::London) london_protest_count++;
             }
         }
 
-        // If >= 50% (2 out of 4) friends are protesting, peer pressure applies
-        if (peers_protesting >= 2) {
-            population[i].applyPeerPressure();
-        }
+        auto step_end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = step_end - step_start;
 
-        // Tally final counts
-        if (population[i].is_protesting) {
-            protesting_count++;
-            if (population[i].is_rural) {
-                rural_protest_count++;
-            }
-            if (population[i].region == Region::London) {
-                london_protest_count++;
-            }
-        }
+        std::cout << "\n=== POLICY REACTION RESULTS ===\n";
+        std::cout << "Policy Applied   : Tax = " << tax_input << "%, Inflation = " << inflation_input << "%\n";
+        std::cout << "Reaction Time    : " << std::fixed << std::setprecision(2) << elapsed.count() << " seconds\n";
+        std::cout << "Total Protesters : " << protesting_count << " / " << TOTAL_CITIZENS 
+                  << " (" << (static_cast<double>(protesting_count) / TOTAL_CITIZENS) * 100.0 << "%)\n";
+        std::cout << "London Protesters: " << london_protest_count << "\n";
+        std::cout << "Rural Protesters : " << rural_protest_count << "\n";
+
+        if (!isatty(fileno(stdin))) break; // Exit loop if piped/non-interactive
     }
-
-    auto end_time = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end_time - start_time;
-
-    // 4. Print Macro & Demographic Results
-    std::cout << "\n=== SIMULATION RESULTS ===\n";
-    std::cout << "Time Elapsed: " << std::fixed << std::setprecision(2) << elapsed.count() << " seconds\n";
-    std::cout << "Total Protesters: " << protesting_count << " / " << TOTAL_CITIZENS 
-              << " (" << (static_cast<double>(protesting_count) / TOTAL_CITIZENS) * 100.0 << "%)\n";
-    std::cout << "Rural Protesters: " << rural_protest_count << "\n";
-    std::cout << "London Protesters: " << london_protest_count << "\n";
 
     return 0;
 }

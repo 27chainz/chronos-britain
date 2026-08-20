@@ -12,7 +12,9 @@ class Agent {
     Ethnicity ethnicity;
     Region region;
     double income;
+    double base_income;
     double approval;
+    double base_approval;
 
     bool is_protesting;
 
@@ -20,6 +22,7 @@ class Agent {
         id = agent_id;
         age = agent_age;
         income = starting_income;
+        base_income = starting_income;
         is_rural = agent_is_rural;
         is_homeowner = agent_is_homeowner;
         ethnicity = agent_ethnicity;
@@ -41,8 +44,16 @@ class Agent {
         if (is_homeowner) approval += 0.05;
         
         // Regional baseline adjustments
-        if (region == Region::London) approval -= 0.05; // High stress/cost
-        if (region == Region::North || region == Region::Scotland) approval -= 0.02; // Historical divides
+        if (region == Region::London) approval -= 0.05;
+        if (region == Region::North || region == Region::Scotland) approval -= 0.02;
+
+        base_approval = approval;
+    }
+    
+    void resetState() {
+        income = base_income;
+        approval = base_approval;
+        is_protesting = false;
     }
     
     void applyEconomicShock(double inflation_rate, double tax_rate) {
