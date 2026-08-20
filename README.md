@@ -5,17 +5,18 @@
 [![Data Source](https://img.shields.io/badge/Data%20Source-ONS%202021%20Census-orange.svg)](https://www.ons.gov.uk/)
 [![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
-A high-performance, empirical C++ agent-based simulation modeling the social and economic dynamics of 6.7 million synthetic agents (1:10 scale of the UK population). The model evaluates how national fiscal shocks and policy interventions propagate through complex social networks over multi-month timelines.
+
+This was one of my first attempts at programming and represents some of my earliest work with C++ and data-driven modeling, which is why you se the heavy AI usage here. C++ is not an easy language to learn ahahahah. This is the first of many. I hope that if your a recruiter seeing this, you see a potential candidate, and not just someone who used AI. I hope you see the potential. I hope that you consider hiring me and giving me the opportunity to prove myself. 
 
 ---
 
 ## 🚀 Key Highlights
 
-- ⚡ **Massive Scale & Sub-3 Second Performance**: Simulates **6.7 million agents** over 12 monthly time steps in **~3 seconds** using C++ memory reservation and vectorized structures.
-- 📊 **Empirical ONS Census Integration**: Driven by data scraped from the Office for National Statistics (ONS), covering demographics, 7 UK regions, income distributions, and homeownership ratios.
-- 🕸️ **Watts-Strogatz Small-World Topology**: Models social contagion using local lattice neighborhoods ($k=4$) combined with random long-range shortcut edges to simulate viral news propagation.
-- 💷 **Realistic UK Fiscal Micro-Simulation**: Implements UK progressive income tax brackets (£12.5k personal allowance, 20% basic, 40% higher rate) and inelastic living cost inflation.
-- 🎛️ **Interactive Policy Console**: Test custom macroeconomic shocks (Tax Adjustments, Inflation) alongside relief policies (Universal Credit top-ups, Energy Bill Caps) in real-time.
+- ⚡ **6.7M Agents in ~3 Seconds**: Built in C++ to simulate 1:10 of the UK population over 12 months in seconds.
+- 📊 **Real UK Census Data**: Powered by live data scraped from the Office for National Statistics (ONS).
+- 🕸️ **Social Network Contagion**: Uses Small-World graph networks to model how news and protests spread.
+- 💷 **Realistic UK Taxes & Savings**: Tracks real UK tax bands (£12.5k allowance, 20%, 40%), inflation, and monthly savings.
+- 🎛️ **Interactive Policy Console**: Test tax changes, inflation, energy caps, and welfare boosts live in your terminal.
 
 ---
 
@@ -99,6 +100,7 @@ Month | Total Protesters | % Pop  | London  | Rural
 
 Timeline Complete! Computation time: 3.08s
 ```
+A high-performance, empirical C++ agent-based simulation modeling the social and economic dynamics of 6.7 million synthetic agents (1:10 scale of the UK population). The model evaluates how national fiscal shocks and policy interventions propagate through complex social networks over multi-month timelines.
 
 ---
 
