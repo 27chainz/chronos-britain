@@ -8,17 +8,20 @@ class Agent {
     double income;
     double approval;
 
-    Agent(int agent_id, int agent_age, bool agent_is_rural, double starting_income){
+    bool is_protesting;
+
+    Agent(int agent_id, double starting_income, bool agent_is_rural){
         id = agent_id;
         income = starting_income;
         approval =  0.45;
-        age = agent_age;
+        age = 30;
         is_rural = agent_is_rural;
-
+        is_protesting = false;
     }
     void applyTax(double tax_rate) {
         double tax_paid = income * tax_rate;
         income = income - tax_paid;
         approval = approval - (tax_paid / 1000.0) * 0.05;
+        is_protesting = (approval < 0.3);
     }
 };
