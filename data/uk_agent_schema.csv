@@ -12,3 +12,9 @@ region,Wales,0.05,0.90
 region,NI,0.03,0.90
 homeownership,under_40,0.35,0.0
 homeownership,over_40,0.70,0.0
+industry,Healthcare_Public,0.18,29500
+industry,Retail_Hospitality,0.22,21000
+industry,Tech_Finance,0.15,52000
+industry,Construction_Manufacturing,0.20,34000
+industry,Education,0.12,31000
+industry,Other,0.13,26000

@@ -1,6 +1,12 @@
 # UK Simulation Project - Event & Feature Log
 
-## Phase 8: Empirical ONS Ingestion & Interactive Policy Engine (Latest)
+## Phase 9: Watts-Strogatz Network & Progressive Multi-Month Policy Shell (Latest)
+- **Watts-Strogatz Small-World Topology**: Upgraded social contagion graph from a static ring lattice to a small-world network with 5% random long-range shortcuts, allowing unrest to spread virally across hubs.
+- **UK Progressive Taxation & Inelastic Expenses**: Modeled exact UK tax bands (£12.5k personal allowance, 20% basic, 40% higher) alongside essential living costs (£1k/mo base, weighted by tenure and region).
+- **Multi-Month Simulation Timeline**: Converted simulation step into a 12-to-24 month timeline where savings deplete gradually each month before triggering protests.
+- **Bi-Directional Policy Interventions**: Users can test positive state interventions (**Welfare / UC Boost**, **Energy Cap Subsidy**) alongside negative shocks (**Tax %**, **Inflation %**).
+
+## Phase 8: Empirical ONS Ingestion & Interactive Policy Engine
 - **ONS Data Scraper (`fetch_ons.py`)**: Built an automated Python scraper to extract dataset listings and metadata directly from the Office for National Statistics (ONS) topic search page (`ons_datasets.json`).
 - **Interactive Policy Shell**: Converted `main.cpp` into a policy engine where the user can input proposed Income Tax Rates and Inflation Rates to dynamically test macro-economic policies and analyze demographic reactions across London, rural areas, and the general UK population in real time.
 

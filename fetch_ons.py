@@ -5,7 +5,7 @@ import csv
 import re
 import os
 
-print("Starting ONS Normalization Pipeline...")
+print("Starting Expanded ONS Normalization Pipeline...")
 
 url = "https://www.ons.gov.uk/search?topics=9731,6646,3845,9497,4262,4128,7755,4994,6885,9724,7367&filter=datasets&page=2"
 
@@ -30,14 +30,12 @@ except Exception as e:
 
 os.makedirs("data", exist_ok=True)
 
-# Save datasets index
 with open("data/ons_datasets.json", "w") as f:
     json.dump(datasets, f, indent=2)
 
-# Generate Normalized Schema CSV for C++ DataEngine
 schema_rows = [
     ["metric", "category", "weight", "modifier"],
-    # Ethnicity breakdown & median incomes (from Census/ONS HBAI)
+    # Ethnicity breakdown & median incomes
     ["ethnicity", "White", "0.817", "32000"],
     ["ethnicity", "Asian", "0.093", "34000"],
     ["ethnicity", "Black", "0.040", "25000"],
@@ -52,7 +50,14 @@ schema_rows = [
     ["region", "NI", "0.03", "0.90"],
     # Housing ratio by age
     ["homeownership", "under_40", "0.35", "0.0"],
-    ["homeownership", "over_40", "0.70", "0.0"]
+    ["homeownership", "over_40", "0.70", "0.0"],
+    # Industry Sector Weight & Average Salary (from ONS ASHE Table 14)
+    ["industry", "Healthcare_Public", "0.18", "29500"],
+    ["industry", "Retail_Hospitality", "0.22", "21000"],
+    ["industry", "Tech_Finance", "0.15", "52000"],
+    ["industry", "Construction_Manufacturing", "0.20", "34000"],
+    ["industry", "Education", "0.12", "31000"],
+    ["industry", "Other", "0.13", "26000"]
 ]
 
 csv_path = "data/uk_agent_schema.csv"
@@ -60,4 +65,4 @@ with open(csv_path, "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerows(schema_rows)
 
-print(f"Successfully generated normalized agent schema: {csv_path}")
+print(f"Successfully updated expanded schema: {csv_path}")
