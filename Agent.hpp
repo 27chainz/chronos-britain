@@ -40,8 +40,6 @@ public:
     double base_approval;
 
     bool is_protesting;
-    
-    // Small-world network long-range peer shortcut ID (-1 if none)
     int long_range_peer_id;
 
     Agent(int agent_id, int agent_age, double starting_income, bool agent_is_rural, Ethnicity agent_ethnicity, Region agent_region, bool agent_is_homeowner, int shortcut_id = -1) {
@@ -56,7 +54,6 @@ public:
         is_protesting = false;
         long_range_peer_id = shortcut_id;
 
-        // Baseline liquid savings based on age & homeownership (in £)
         double initial_savings = (age * 150.0) + (is_homeowner ? 5000.0 : 500.0);
         monthly_savings = initial_savings;
         base_savings = initial_savings;
@@ -68,7 +65,6 @@ public:
             case Ethnicity::MixedOther: approval = 0.45; break;
         }
 
-        // Demographic & regional stability modifiers
         if (age >= 65) approval += 0.05;
         if (age <= 30) approval -= 0.05;
         if (is_homeowner) approval += 0.05;
@@ -85,7 +81,6 @@ public:
         is_protesting = false;
     }
 
-    // UK Progressive Tax Band Calculation
     static double calculateNetMonthlyIncome(double gross_annual, double tax_modifier_pct) {
         double personal_allowance = 12570.0;
         double basic_rate_cap = 50270.0;
@@ -105,14 +100,11 @@ public:
         return net_annual / 12.0;
     }
 
-    // Process a single month step
     void processMonthStep(double inflation_rate, double tax_modifier_pct, double monthly_welfare_boost, double energy_subsidy) {
         double net_monthly = calculateNetMonthlyIncome(annual_gross_income, tax_modifier_pct) + monthly_welfare_boost;
 
-        // Inelastic essential living costs (food, energy, rent/mortgage)
-        double base_essential_cost = 1000.0; // £1,000/mo baseline
+        double base_essential_cost = 1000.0;
         
-        // Renters hit harder by inflation
         double housing_multiplier = is_homeowner ? 0.9 : 1.3;
         double regional_multiplier = (region == Region::London) ? 1.4 : 1.0;
 
@@ -122,18 +114,16 @@ public:
         double net_cashflow = net_monthly - adjusted_essential_cost;
         monthly_savings += net_cashflow;
 
-        // Severe economic distress if savings depleted or negative cashflow
         if (monthly_savings < 0) {
-            approval -= 0.08; // Rapid drop when in deficit
+            approval -= 0.08;
         } else if (net_cashflow < 0) {
-            approval -= 0.03; // Gradual drop when burning savings
+            approval -= 0.03;
         } else {
-            approval += 0.01; // Slight recovery when surplus
+            approval += 0.01;
         }
 
         approval = std::clamp(approval, 0.0, 1.0);
 
-        // Protest threshold (Younger citizens protest at higher approval rates)
         double protest_threshold = (age < 30) ? 0.38 : 0.30;
         if (approval < protest_threshold) {
             is_protesting = true;

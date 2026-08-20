@@ -31,7 +31,6 @@ int main() {
 
     std::normal_distribution<double> age_dist(42.0, 15.0);
 
-    // Generate Population with Small-World Long-Range Shortcuts (Watts-Strogatz topology)
     for (int i = 0; i < TOTAL_CITIZENS; ++i) {
         double roll_eth = dist(rng);
         Ethnicity eth;
@@ -83,7 +82,6 @@ int main() {
             income *= 0.90;
         }
 
-        // Watts-Strogatz rewire probability: 5% chance of long-range social shortcut
         int shortcut_id = -1;
         if (dist(rng) < 0.05) {
             shortcut_id = citizen_dist(rng);
@@ -96,7 +94,6 @@ int main() {
     std::chrono::duration<double> gen_elapsed = gen_end - start_time;
     std::cout << "Population & Small-World Graph loaded in " << std::fixed << std::setprecision(2) << gen_elapsed.count() << " seconds.\n";
 
-    // Interactive Policy Shell
     std::cout << "\n=========================================================\n";
     std::cout << "  UK SOCIOECONOMIC SIMULATION - ADVANCED POLICY ENGINE\n";
     std::cout << "=========================================================\n";
@@ -139,7 +136,6 @@ int main() {
         double tax_mod_pct = tax_mod_input / 100.0;
         double inflation_rate = inflation_input / 100.0;
 
-        // Reset Population State
         for (Agent& citizen : population) {
             citizen.resetState();
         }
@@ -150,14 +146,11 @@ int main() {
 
         auto sim_start = std::chrono::high_resolution_clock::now();
 
-        // Multi-Month Execution Loop
         for (int m = 1; m <= sim_months; ++m) {
-            // Step 1: Process monthly personal cashflow & savings depletion
             for (Agent& citizen : population) {
                 citizen.processMonthStep(inflation_rate, tax_mod_pct, welfare_boost_input, energy_subsidy_input);
             }
 
-            // Step 2: Apply Peer Contagion on Small-World Graph
             int total_protesting = 0;
             int london_protesting = 0;
             int rural_protesting = 0;
@@ -165,18 +158,15 @@ int main() {
             for (int i = 0; i < TOTAL_CITIZENS; ++i) {
                 int peer_protests = 0;
                 
-                // Ring lattice 4 nearest neighbors
                 for (int offset : {-2, -1, 1, 2}) {
                     int peer_idx = (i + offset + TOTAL_CITIZENS) % TOTAL_CITIZENS;
                     if (population[peer_idx].is_protesting) peer_protests++;
                 }
 
-                // Small-world long-range shortcut peer
                 if (population[i].long_range_peer_id != -1 && population[population[i].long_range_peer_id].is_protesting) {
                     peer_protests++;
                 }
 
-                // Peer pressure triggers if >= 2 connections are protesting
                 if (peer_protests >= 2) {
                     population[i].applyPeerPressure();
                 }

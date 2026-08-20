@@ -26,7 +26,6 @@ public:
         }
 
         std::string line;
-        // Skip CSV header
         std::getline(file, line);
 
         while (std::getline(file, line)) {
